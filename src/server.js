@@ -7,6 +7,9 @@ const geocode = require('../utils/geocode')
 const forecast = require('../utils/forecast')
 const app = express()
 
+// for heroku
+const port = process.env.PORT || 3000;
+
 // setup handlebars engines and views
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '../public/templates/views/'));
@@ -39,7 +42,7 @@ app.get('/help', (req, res) => {
 
 app.get('/weather', (req, res) => {
     if(!req.query.address){
-        res.send({
+        return res.send({
             error: 'Please specify the location'
         })
     }
@@ -48,16 +51,16 @@ app.get('/weather', (req, res) => {
     // geocode(location_name, (error, data) => {
     geocode(req.query.address, (error, {location, latitude, longitude} = {}) => {
         if(error){
-            res.send({error});
+            return res.send({error});
         }
 
         forecast(latitude, longitude, (error, forecastData) => {
 
             if(error){
-                res.send({error});
+                return res.send({error});
             }
 
-            res.send({location, forecastData});
+            return res.send({location, forecastData});
         })
     })
 })
@@ -79,4 +82,4 @@ app.get('*', (req, res) => {
     });
 })
 
-app.listen(3000);
+app.listen(port);
