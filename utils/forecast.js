@@ -16,8 +16,8 @@ const forecast = (latitude, longitude, callback) => {
             callback('Unable to get location data', null);
         }
         else{
-            const {temperature, precipProbability, summary} =  body.currently
-            callback(null, summary + '. The temperature is ' + temperature + '. There are ' + precipProbability + '% chances of rain.')
+            const {temperature, precipProbability, summary, humidity} =  body.currently
+            callback(null, summary + '. The temperature is ' + temperature + '. The humidity is ' + humidity  + '. There are ' + precipProbability + '% chances of rain.')
         }
     })
 }
